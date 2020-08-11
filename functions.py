@@ -35,7 +35,7 @@ def un_zip(file, output_folder, unzip_type):
     return 0
 
 
-def data_plot(data_address, suffix, begin_time: int, minutes: int, features: int):
+def data_plot(data_address, suffix, machine_number, begin_time: int, minutes, features: int):
     """
     unfinished
     you must specifying the [data_address] like E:/..../year(2019)/month(01)/day(01)/
@@ -45,14 +45,15 @@ def data_plot(data_address, suffix, begin_time: int, minutes: int, features: int
     [features] means the what is plot on Y axis, only support one features every time in this version.
     """
     input_list = find_file(data_address, suffix)
-    plot_matrix = np.zeros(minutes*24*60*60)
+    plot_matrix = np.zeros((minutes[1]-minutes[0] + 10)*60)
     count = 0
     for files in input_list:
         term = re.findall("\d+", files)
         time_label = int(term[0]+term[1]+term[2])
-        if time_label < begin_time:
+        time_label2 = int(term[4])*60 + int(term[5])
+        if time_label < begin_time or time_label2 < minutes[0] or machine_number != term[3]:
             continue
-        if count > minutes:
+        if time_label2 > minutes[1]:
             break
         # data_matrix = np.loadtxt(files, delimiter=",", skiprows=1)
         # print(type(data_matrix))
@@ -69,7 +70,7 @@ def data_plot(data_address, suffix, begin_time: int, minutes: int, features: int
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.set(title='An Example Axes', ylabel='Y-Axis', xlabel='X-Axis')
-    ax.plot(plot_matrix[:count*length])
+    ax.plot(plot_matrix)
     plt.show()
     return 0
 
