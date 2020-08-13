@@ -35,6 +35,16 @@ def un_zip(file, output_folder, unzip_type):
     return 0
 
 
+def remove_files(file, remove_type):
+    if remove_type == 'sf':
+        os.remove(file)
+    else:
+        for files in file:
+            os.remove(files)
+    print('Delete all files')
+    return 0
+
+
 def data_plot(data_address, suffix, machine_number, begin_time: int, minutes, features: int):
     """
     unfinished
